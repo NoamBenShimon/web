@@ -7,7 +7,6 @@ import SearchableSelect, {SelectItem} from '@/components/SearchableSelect';
 import EquipmentList, {EquipmentData} from '@/components/EquipmentList';
 import SaveToCartButton from '@/components/SaveToCartButton';
 import {useAuth} from '@/contexts/AuthContext';
-import {CartProvider} from '@/contexts/CartContext';
 
 // Define the API URL using the environment variable injected by Docker Compose.
 // CRITICAL: Next.js must be told which URL to use for the API Gateway service.
@@ -189,8 +188,7 @@ export default function Home() {
     }
 
     return (
-        <CartProvider>
-            <Layout>
+        <Layout>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="text-center mb-12">
                     <h1 className="text-4xl font-bold text-zinc-900 dark:text-white mb-4">
@@ -262,6 +260,5 @@ export default function Home() {
                 </div>
             </div>
         </Layout>
-        </CartProvider>
     );
 }
