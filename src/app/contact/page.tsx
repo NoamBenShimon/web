@@ -29,11 +29,16 @@ export default function ContactPage() {
                                 <h3 className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-1">
                                     Address
                                 </h3>
-                                <p className="text-zinc-900 dark:text-white">
+                                <a
+                                    href="https://maps.app.goo.gl/jz7yv3hggruuKcjs9"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-600 dark:text-blue-400 hover:underline"
+                                >
                                     Lev Hakrayot Center<br />
                                     Ben Gurion Boulevard 80<br />
                                     Kiryat Motzkin, Israel
-                                </p>
+                                </a>
                             </div>
                             <div>
                                 <h3 className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-1">
