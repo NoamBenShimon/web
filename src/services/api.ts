@@ -12,14 +12,15 @@
 import { CartEntryPayload } from '@/types/cart';
 
 /**
- * Base URL for all API requests.
- * Configured via NEXT_PUBLIC_API_URL environment variable.
+ * Gets the API base URL.
+ * Uses a getter to avoid issues during SSR/module evaluation.
  */
-const API_BASE = process.env.NEXT_PUBLIC_API_URL;
-
-// Only warn in browser environment to avoid false positives during SSR/build
-if (typeof window !== 'undefined' && !API_BASE) {
-    console.error('[CRITICAL] NEXT_PUBLIC_API_URL is not set. All API requests will fail. Set this in your .env.local or environment variables.');
+function getApiBase(): string {
+    const base = process.env.NEXT_PUBLIC_API_URL;
+    if (!base && typeof window !== 'undefined') {
+        console.error('[CRITICAL] NEXT_PUBLIC_API_URL is not set. All API requests will fail. Set this in your .env.local or environment variables.');
+    }
+    return base || '';
 }
 
 // =============================================================================
@@ -47,7 +48,7 @@ if (typeof window !== 'undefined' && !API_BASE) {
  */
 export async function login(credentials: { username: string; password: string }) {
     console.log('Attempting login with', credentials);
-    const res = await fetch(`${API_BASE}/api/login`, {
+    const res = await fetch(`${getApiBase()}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
@@ -78,7 +79,7 @@ export async function login(credentials: { username: string; password: string })
  */
 export async function logout() {
     // Call backend /api/logout to clear session
-    const res = await fetch(`${API_BASE}/api/logout`, {
+    const res = await fetch(`${getApiBase()}/api/logout`, {
         method: 'POST',
         credentials: 'include',
     });
@@ -94,7 +95,7 @@ export async function logout() {
  */
 export async function checkAuth() {
     // Checks if the user is authenticated (e.g., GET /api/auth/status or /api/auth/me)
-    const res = await fetch(`${API_BASE}/api/auth/status`, {
+    const res = await fetch(`${getApiBase()}/api/auth/status`, {
         method: 'GET',
         credentials: 'include',
     });
@@ -121,7 +122,7 @@ export async function checkAuth() {
  * @throws {Error} If cart fetch fails
  */
 export async function getCart(userid: string) {
-    const res = await fetch(`${API_BASE}/api/cart?userid=${encodeURIComponent(userid)}`, {
+    const res = await fetch(`${getApiBase()}/api/cart?userid=${encodeURIComponent(userid)}`, {
         method: 'GET',
         credentials: 'include',
     });
@@ -154,7 +155,7 @@ export async function updateCart(userid: string, items: CartEntryPayload[]) {
             id: String(item.id)
         }))
     }));
-    const res = await fetch(`${API_BASE}/api/cart?userid=${encodeURIComponent(userid)}`, {
+    const res = await fetch(`${getApiBase()}/api/cart?userid=${encodeURIComponent(userid)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(itemsWithStringIds),
